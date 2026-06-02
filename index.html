@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Central Maine Redevelopment — New Homes. Same Roots.</title>
+<meta name="description" content="From 200 renovations to a repeatable build system. The Central Maine Redevelopment story." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --pine:#234A35;
+    --pine-deep:#1A3829;
+    --forest:#3A6B4C;
+    --sage:#8C8B5A;
+    --cream:#F4ECD8;
+    --cream-soft:#FAF5E9;
+    --ink:#1A1A1A;
+    --ink-soft:#3a3a35;
+    --line:rgba(35,74,53,.14);
+    --maxw:1120px;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Archivo',sans-serif;line-height:1.04;letter-spacing:-.02em}
+
+  /* progress bar */
+  #progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;
+    background:linear-gradient(90deg,var(--sage),var(--forest));transition:width .1s linear}
+
+  /* floating brand mark after hero */
+  #mark{position:fixed;top:18px;left:24px;z-index:90;display:flex;align-items:center;gap:10px;
+    opacity:0;transform:translateY(-12px);transition:opacity .5s,transform .5s;pointer-events:none}
+  #mark.show{opacity:1;transform:none}
+  #mark img{height:38px;width:38px;border-radius:50%;object-fit:cover;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+  #mark span{font-family:'Archivo';font-weight:800;font-size:.82rem;letter-spacing:.02em;color:var(--pine);
+    background:rgba(244,236,216,.85);padding:5px 12px;border-radius:20px;backdrop-filter:blur(6px)}
+
+  section{padding:clamp(72px,11vw,150px) 24px}
+  .wrap{max-width:var(--maxw);margin:0 auto}
+  .narrow{max-width:760px}
+
+  .kicker{font-family:'Archivo';font-weight:700;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--sage);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+  .kicker::before{content:"";width:34px;height:2px;background:var(--sage)}
+
+  h2{font-size:clamp(2rem,4.6vw,3.4rem);font-weight:800;color:var(--pine);margin-bottom:22px}
+  .lead{font-size:clamp(1.12rem,1.9vw,1.4rem);color:var(--ink-soft);font-weight:400;max-width:60ch}
+  p+p{margin-top:1rem}
+  .body p{font-size:1.07rem;color:var(--ink-soft)}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:24px;color:var(--cream);overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;
+    background:
+      linear-gradient(180deg,rgba(26,56,41,.55) 0%,rgba(26,56,41,.42) 40%,rgba(26,56,41,.82) 100%),
+      url('https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/somerset-exterior.png') center/cover no-repeat;
+    transform:scale(1.08);will-change:transform;z-index:0}
+  .hero>.hero-in{position:relative;z-index:1;max-width:880px}
+  .hero .logo{height:108px;width:108px;border-radius:50%;object-fit:cover;margin:0 auto 30px;
+    box-shadow:0 10px 40px rgba(0,0,0,.35);border:3px solid rgba(244,236,216,.6)}
+  .hero h1{font-size:clamp(2.6rem,7vw,5.4rem);font-weight:900;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.3)}
+  .hero .tag{font-family:'Archivo';font-weight:600;letter-spacing:.05em;font-size:clamp(1.1rem,2.4vw,1.6rem);
+    color:var(--cream);margin-top:14px;opacity:.96}
+  .hero .sub{margin-top:26px;font-size:clamp(1.05rem,2vw,1.3rem);color:rgba(244,236,216,.9);font-weight:400}
+  .scrollcue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:1;color:var(--cream);
+    font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;font-family:'Archivo';font-weight:700;opacity:.85}
+  .scrollcue .arrow{display:block;margin:10px auto 0;width:18px;height:18px;border-right:2px solid var(--cream);
+    border-bottom:2px solid var(--cream);transform:rotate(45deg);animation:bob 1.8s infinite}
+  @keyframes bob{0%,100%{transform:rotate(45deg) translate(0,0);opacity:.5}50%{transform:rotate(45deg) translate(4px,4px);opacity:1}}
+
+  .bg-cream{background:var(--cream)}
+  .bg-soft{background:var(--cream-soft)}
+  .bg-white{background:#fff}
+  .bg-pine{background:var(--pine);color:var(--cream)}
+  .bg-pine h2{color:#fff}.bg-pine .lead{color:rgba(244,236,216,.85)}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:14px}
+  .stat .num{font-family:'Archivo';font-weight:900;font-size:clamp(2.8rem,7vw,4.6rem);color:var(--pine);line-height:1}
+  .stat .lab{font-size:.98rem;color:var(--ink-soft);margin-top:8px;font-weight:500}
+  .stat .sub{font-size:.84rem;color:var(--sage);font-weight:600;margin-top:2px}
+  @media(max-width:640px){.stats{grid-template-columns:1fr;gap:34px}}
+
+  /* timeline-ish flow chips */
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:30px;font-family:'Archivo';font-weight:700}
+  .flow .chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:12px 22px;font-size:1.02rem;color:var(--pine)}
+  .flow .chip.bad{background:#5a2b2b;color:#fff;border-color:#5a2b2b}
+  .flow .chip.good{background:var(--forest);color:#fff;border-color:var(--forest)}
+  .flow .ar{color:var(--sage);font-size:1.3rem}
+
+  /* two-column */
+  .split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,72px);align-items:center}
+  .split.rev{direction:rtl}.split.rev>*{direction:ltr}
+  @media(max-width:860px){.split,.split.rev{grid-template-columns:1fr;direction:ltr}}
+
+  /* build numbers */
+  .budget{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin:22px 0 6px;font-family:'Archivo'}
+  .budget .t{font-weight:600;font-size:1.15rem;color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--sage);opacity:.7}
+  .budget .ar{color:var(--sage);font-weight:800;font-size:1.3rem}
+  .budget .a{font-weight:900;font-size:clamp(1.6rem,3.4vw,2.3rem);color:var(--pine)}
+  .psf{display:inline-block;background:var(--sage);color:#fff;font-family:'Archivo';font-weight:700;
+    font-size:.92rem;padding:5px 14px;border-radius:6px;letter-spacing:.02em}
+
+  /* galleries */
+  .gal{display:grid;gap:12px}
+  .gal img{width:100%;height:100%;object-fit:cover;border-radius:10px;display:block;
+    box-shadow:0 8px 28px rgba(35,74,53,.16)}
+  .gal.g4{grid-template-columns:1fr 1fr;grid-auto-rows:150px}
+  .gal.g4 img:first-child{grid-column:1/3;grid-row:auto;height:220px}
+  .gal.single img{height:clamp(260px,42vw,460px)}
+  .placeholder{border:2px dashed var(--sage);border-radius:10px;display:flex;align-items:center;justify-content:center;
+    text-align:center;color:var(--forest);font-family:'Archivo';font-weight:700;font-size:.9rem;padding:22px;
+    min-height:160px;background:rgba(140,139,90,.07)}
+
+  /* feature list */
+  .feats{list-style:none;margin-top:24px;display:grid;gap:14px}
+  .feats li{position:relative;padding-left:34px;font-size:1.08rem;color:var(--ink-soft)}
+  .feats li::before{content:"";position:absolute;left:0;top:9px;width:14px;height:14px;border-radius:3px;
+    background:var(--forest);transform:rotate(45deg)}
+  .feats li b{color:var(--pine);font-weight:600}
+
+  /* WALL cards */
+  .walls{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:10px}
+  @media(max-width:820px){.walls{grid-template-columns:1fr}}
+  .wcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 26px;position:relative;
+    transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+  .wcard:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(35,74,53,.16)}
+  .wcard.win{border:2px solid var(--sage);box-shadow:0 14px 40px rgba(140,139,90,.22)}
+  .wcard .badge{position:absolute;top:-13px;left:26px;background:var(--sage);color:#fff;font-family:'Archivo';
+    font-weight:800;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:6px 14px;border-radius:20px}
+  .wcard h3{font-size:1.35rem;color:var(--pine);font-weight:800;margin-bottom:4px}
+  .wcard .price{font-family:'Archivo';font-weight:900;font-size:2.6rem;color:var(--forest);line-height:1.1;margin:8px 0 4px}
+  .wcard .meta{font-size:.95rem;color:var(--ink-soft)}
+  .wcard ul{list-style:none;margin-top:14px;font-size:.92rem;color:var(--ink-soft);display:grid;gap:7px}
+  .wcard ul li::before{content:"›  ";color:var(--sage);font-weight:800}
+
+  .yeti{margin-top:40px;background:var(--pine);color:var(--cream);border-radius:16px;padding:34px 38px;
+    display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+  .yeti .big{font-family:'Archivo';font-weight:900;font-size:clamp(1.4rem,2.8vw,2rem);line-height:1.15;flex:1;min-width:260px}
+  .yeti .big em{color:var(--sage);font-style:normal}
+  .yeti .note{flex:1;min-width:240px;font-size:1.02rem;color:rgba(244,236,216,.9)}
+  .proj{margin-top:24px;font-family:'Archivo';font-weight:700;color:var(--pine);font-size:1.15rem}
+  .proj .soft{color:var(--sage);font-weight:600;font-size:.9rem}
+
+  /* businesses */
+  .biz{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:18px}
+  @media(max-width:820px){.biz{grid-template-columns:1fr}}
+  .bizcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:38px 34px;
+    transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+  .bizcard:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(35,74,53,.14)}
+  .bizcard .n{font-family:'Archivo';font-weight:900;font-size:1.1rem;color:var(--sage);letter-spacing:.1em}
+  .bizcard h3{font-size:1.6rem;color:var(--pine);font-weight:800;margin:8px 0 14px}
+  .bizcard p{color:var(--ink-soft);font-size:1.04rem}
+
+  /* tenantlane badge */
+  .tl{display:inline-flex;align-items:center;gap:12px;margin-top:24px;background:rgba(244,236,216,.12);
+    border:1px solid rgba(244,236,216,.3);border-radius:12px;padding:16px 22px}
+  .tl .dot{width:11px;height:11px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 0 rgba(140,139,90,.6);
+    animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(140,139,90,.55)}70%{box-shadow:0 0 0 12px rgba(140,139,90,0)}100%{box-shadow:0 0 0 0 rgba(140,139,90,0)}}
+  .tl b{font-family:'Archivo';font-weight:800}
+  .tl span{color:rgba(244,236,216,.85)}
+
+  /* chassis configs */
+  .configs{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:14px}
+  @media(max-width:900px){.configs{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.configs{grid-template-columns:1fr}}
+  .config{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
+  .config:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(35,74,53,.16)}
+  .config img{width:100%;height:160px;object-fit:cover;display:block;background:#0e0e0e}
+  .config .cc{padding:18px 20px}
+  .config .nm{font-family:'Archivo';font-weight:800;font-size:1.2rem;color:var(--pine)}
+  .config .ty{font-family:'Archivo';font-weight:700;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--sage);margin-top:3px}
+  .config .ds{font-size:.92rem;color:var(--ink-soft);margin-top:9px}
+  .config.lead-cfg{border:2px solid var(--sage)}
+  .config .tag2{display:inline-block;background:var(--forest);color:#fff;font-family:'Archivo';font-weight:700;
+    font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:12px;margin-top:10px}
+  .same{margin-top:34px;display:flex;flex-wrap:wrap;gap:14px}
+  .same .pill{background:rgba(35,74,53,.06);border:1px solid var(--line);border-radius:10px;padding:14px 20px;
+    font-family:'Archivo';font-weight:700;color:var(--pine);font-size:.98rem;flex:1;min-width:200px}
+  .same .pill span{display:block;font-family:'Inter';font-weight:400;color:var(--ink-soft);font-size:.86rem;margin-top:3px}
+
+  /* returns / cap rate */
+  .calc{background:rgba(244,236,216,.07);border:1px solid rgba(244,236,216,.2);border-radius:16px;padding:30px 34px}
+  .calc .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:13px 0;
+    border-bottom:1px solid rgba(244,236,216,.14);font-size:1.05rem}
+  .calc .row:last-child{border-bottom:0}
+  .calc .row .l{color:rgba(244,236,216,.82)}
+  .calc .row .v{font-family:'Archivo';font-weight:800;color:#fff;white-space:nowrap}
+  .calc .row.noi .l,.calc .row.noi .v{color:var(--sage);font-size:1.18rem}
+  .calc .row .v.minus{color:#e6b9a6}
+  .bignum{text-align:center}
+  .bignum .cap{font-family:'Archivo';font-weight:900;font-size:clamp(4.5rem,13vw,7.5rem);color:var(--sage);line-height:.9}
+  .bignum .cl{font-family:'Archivo';font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:rgba(244,236,216,.85);font-size:.9rem;margin-top:10px}
+  .bignum .yc{color:rgba(244,236,216,.6);font-size:.86rem;margin-top:4px}
+  .created{margin-top:26px;background:var(--sage);color:#15240f;border-radius:14px;padding:24px 28px;
+    font-family:'Archivo'}
+  .created .big{font-weight:900;font-size:clamp(1.3rem,2.6vw,1.8rem);line-height:1.2}
+  .created .sm{font-family:'Inter';font-weight:500;font-size:.92rem;margin-top:8px;color:#2a3a1c}
+
+  /* closing forks */
+  .forks{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:34px}
+  @media(max-width:820px){.forks{grid-template-columns:1fr}}
+  .fork{background:rgba(244,236,216,.08);border:1px solid rgba(244,236,216,.22);border-radius:14px;padding:26px}
+  .fork .q{font-family:'Archivo';font-weight:900;font-size:1.5rem;color:var(--sage)}
+  .fork p{margin-top:10px;color:rgba(244,236,216,.92);font-size:1.02rem}
+  .closing .logo{height:88px;width:88px;border-radius:50%;object-fit:cover;margin-bottom:24px;
+    border:3px solid rgba(244,236,216,.5)}
+
+  footer{background:var(--pine-deep);color:rgba(244,236,216,.6);text-align:center;padding:40px 24px;font-size:.86rem}
+  footer .disc{color:var(--sage);font-weight:600;margin-bottom:6px;font-family:'Archivo';letter-spacing:.02em}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="mark">
+  <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/cmr-logo.jpg" alt="CMR" />
+  <span>Central Maine Redevelopment</span>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-in">
+    <img class="logo" src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/cmr-logo.jpg" alt="Central Maine Redevelopment logo" />
+    <h1>Central Maine Redevelopment</h1>
+    <div class="tag">New Homes. Same Roots.</div>
+    <div class="sub">From 200 renovations to a repeatable build system.</div>
+  </div>
+  <div class="scrollcue">Scroll<span class="arrow"></span></div>
+</header>
+
+<!-- FOUNDER -->
+<section class="bg-cream">
+  <div class="wrap narrow body">
+    <div class="kicker reveal">About the founder</div>
+    <h2 class="reveal d1">Brett Brockway</h2>
+    <p class="lead reveal d2">A finance, operations, and software brain — pointed at construction.</p>
+    <ul class="feats reveal d3">
+      <li><b>Finance degree</b>, University of Maine at Augusta</li>
+      <li><b>Athenahealth</b> — consulted and built small software applications for internal operations</li>
+    </ul>
+    <p class="reveal d4" style="margin-top:22px">It's why this story keeps ending in systems and products — flattening supply chains, designing waste out, and building tools like TenantLane. We don't just build houses; we build the process around them.</p>
+  </div>
+</section>
+
+<!-- WHERE WE STARTED / STATS -->
+<section class="bg-white">
+  <div class="wrap">
+    <div class="kicker reveal">Where we came from</div>
+    <h2 class="reveal d1">We operated at scale — then hit a wall.</h2>
+    <div class="stats">
+      <div class="stat reveal d1"><div class="num" data-to="200" data-suffix="+">0</div><div class="lab">Apartments renovated</div></div>
+      <div class="stat reveal d2"><div class="num" data-to="700">0</div><div class="lab">Doors under management</div><div class="sub">at peak</div></div>
+      <div class="stat reveal d3"><div class="num" data-to="350">0</div><div class="lab">Doors today</div><div class="sub">healthy book, by choice</div></div>
+    </div>
+    <div class="flow reveal d3">
+      <span class="chip">700 doors</span><span class="ar">→</span>
+      <span class="chip bad">Bad debt: a structural flaw</span><span class="ar">→</span>
+      <span class="chip good">Scaled back to 350</span>
+    </div>
+    <p class="lead reveal d4" style="margin-top:30px">Bad debt wasn't a one-off — it was baked into the scale-up model. So we made a deliberate call: don't grind through a broken unit economic. We kept the healthy book and shed the drag.</p>
+  </div>
+</section>
+
+<!-- PIVOT / VERTICAL INTEGRATION -->
+<section class="bg-soft">
+  <div class="wrap narrow body">
+    <div class="kicker reveal">The pivot</div>
+    <h2 class="reveal d1">From managing to building.</h2>
+    <p class="lead reveal d2">The next value creation was in building — and the construction supply chain was full of stacked markups we could flatten.</p>
+    <ul class="feats reveal d3">
+      <li>Pulled trades out of our own management business — <b>electricians, plumbers</b> — onto our builds</li>
+      <li>Removed layers of subcontractor markup</li>
+      <li>Took our <b>best carpenters</b> and pointed them at our first ground-up build</li>
+    </ul>
+    <p class="reveal d4" style="margin-top:24px"><b>Then the framers walked on day one</b> — they didn't understand what they'd quoted. So we brought framing in-house too. The pattern: every time the market failed us, we absorbed the capability.</p>
+  </div>
+</section>
+
+<!-- BUDGET PHILOSOPHY -->
+<section class="bg-pine">
+  <div class="wrap narrow">
+    <div class="kicker reveal" style="color:var(--sage)">A note on our budgets</div>
+    <h2 class="reveal d1">The overages are the point.</h2>
+    <p class="lead reveal d2">Our budgets were never forecasts. They were deliberately aggressive <b style="color:var(--sage)">lines in the sand</b> — a number we didn't yet know how to hit, set to force every cost-out decision.</p>
+    <p class="reveal d3" style="margin-top:16px;color:rgba(244,236,216,.85);font-size:1.07rem">So yes — we came in over "budget," by design. The gap is the learning, not a miss. Each overage told us exactly where the next dollar comes out.</p>
+  </div>
+</section>
+
+<!-- BUILD 1: 15 WOODLAWN -->
+<section class="bg-cream">
+  <div class="wrap split">
+    <div class="body">
+      <div class="kicker reveal">Build #1 · Winslow</div>
+      <h2 class="reveal d1">15 Woodlawn Drive</h2>
+      <p class="reveal d2" style="color:var(--ink-soft)">Our primary residence and proving ground — the first ground-up build, and where we learned what we didn't know.</p>
+      <div class="budget reveal d2"><span class="t">$550K target</span><span class="ar">→</span><span class="a">$750–800K</span></div>
+      <span class="psf reveal d3">≈ $230 / sqft · incl. land</span>
+    </div>
+    <div class="gal g4 reveal d2">
+      <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/woodlawn-int1.jpeg" alt="15 Woodlawn interior" loading="lazy" />
+      <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/woodlawn-int2.jpeg" alt="15 Woodlawn interior" loading="lazy" />
+      <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/woodlawn-int3.jpeg" alt="15 Woodlawn interior" loading="lazy" />
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:14px">
+    <div class="placeholder reveal">Exterior photo coming — drop in when ready.</div>
+  </div>
+</section>
+
+<!-- BUILD 2: 20 TURNER -->
+<section class="bg-white">
+  <div class="wrap split rev">
+    <div class="body">
+      <div class="kicker reveal">Build #2 · Duplex</div>
+      <h2 class="reveal d1">20 Turner Avenue</h2>
+      <p class="reveal d2" style="color:var(--ink-soft)">First time applying the design-for-cost playbook at the unit level. The gap to target closed meaningfully — the system was starting to work.</p>
+      <div class="budget reveal d2"><span class="t">$200K target</span><span class="ar">→</span><span class="a">$250K</span></div>
+      <span class="psf reveal d3">≈ $172 / sqft · excl. land</span>
+    </div>
+    <div class="gal g4 reveal d2">
+      <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/turner-kitchen.jpg" alt="20 Turner kitchen" loading="lazy" />
+      <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/turner-lr1.jpg" alt="20 Turner living room" loading="lazy" />
+      <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/turner-br1.jpg" alt="20 Turner bedroom" loading="lazy" />
+    </div>
+  </div>
+</section>
+
+<!-- DESIGN FOR COST -->
+<section class="bg-soft">
+  <div class="wrap narrow body">
+    <div class="kicker reveal">Design for cost</div>
+    <h2 class="reveal d1">Engineering the waste out.</h2>
+    <p class="lead reveal d2">Most of a build's cost is convention, not necessity. So we questioned every component.</p>
+    <ul class="feats reveal d3">
+      <li>Limited the number of <b>seams</b></li>
+      <li>Reduced <b>outlet</b> count to what's actually needed</li>
+      <li><b>Optimized trusses</b> for usable storage space</li>
+      <li>Stripped out every non-essential component</li>
+      <li>Advanced framing: <b>2×6 at 24" on-center</b> with a double sill plate</li>
+    </ul>
+  </div>
+</section>
+
+<!-- BUILD 3: 49 DRUMMOND -->
+<section class="bg-cream">
+  <div class="wrap split">
+    <div class="body">
+      <div class="kicker reveal">Build #3 · Current</div>
+      <h2 class="reveal d1">49 Drummond — two duplexes</h2>
+      <p class="reveal d2" style="color:var(--ink-soft)">Our most systematized build yet — and where the real-world frictions finally showed up at scale.</p>
+      <ul class="feats reveal d3">
+        <li><b>Labor cost creep:</b> crews idled waiting on dependencies that arrived late</li>
+        <li><b>Material prices</b> consistently came in over budget</li>
+        <li>The bottleneck isn't labor skill — it's <b>schedule and supply-chain certainty</b></li>
+      </ul>
+    </div>
+    <div class="gal single reveal d2">
+      <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/somerset-exterior.png" alt="49 Drummond Somerset duplex rendering" loading="lazy" />
+    </div>
+  </div>
+</section>
+
+<!-- WALL DECISION -->
+<section class="bg-white">
+  <div class="wrap">
+    <div class="kicker reveal">The cost-out case study</div>
+    <h2 class="reveal d1">The wall decision.</h2>
+    <p class="lead reveal d2" style="margin-bottom:42px">We tested three ways to build exterior walls. The answer reframed the whole business.</p>
+    <div class="walls">
+      <div class="wcard reveal d1">
+        <h3>Ware Butler prefab</h3>
+        <div class="price">$13K</div>
+        <div class="meta">Cheapest sticker price</div>
+        <ul><li>Uninsulated</li><li>Still must insulate + finish on site</li></ul>
+      </div>
+      <div class="wcard reveal d2">
+        <h3>Frame our own</h3>
+        <div class="price">~$30K</div>
+        <div class="meta">Most labor, most schedule risk</div>
+        <ul><li>4 weeks of labor</li><li>+ $10K in materials</li><li>Insulated on site</li></ul>
+      </div>
+      <div class="wcard win reveal d3">
+        <div class="badge">The winner</div>
+        <h3>EcoPanels</h3>
+        <div class="price">$17K</div>
+        <div class="meta">Near-turnkey off the truck</div>
+        <ul><li>R-26 insulated</li><li>Pre-sided with LP SmartSide</li><li>Wiring/plumbing chases pre-cut</li><li>~1 week setup</li></ul>
+      </div>
+    </div>
+    <div class="yeti reveal d2">
+      <div class="big">The insulation is the <em>same tech as a Yeti cooler</em> — a continuous foam core that holds R-26.</div>
+      <div class="note">No thermal bridging through studs. The panel arrives pre-sided with chases already cut — you set it and move on. This is the moment the "kit of parts" idea became obvious.</div>
+    </div>
+    <div class="gal g4 reveal d3" style="margin-top:22px;grid-auto-rows:200px">
+      <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/ecopanel1.jpg" alt="EcoPanel insulated wall panel" loading="lazy" style="height:200px" />
+      <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/ecopanel2.jpg" alt="EcoPanel insulated wall panel" loading="lazy" style="height:200px" />
+    </div>
+    <div class="proj reveal d3">Projecting ≈ $20K for exterior walls going forward <span class="soft">(preliminary — still firming up)</span> — buying down schedule risk and labor exposure, not just material cost.</div>
+  </div>
+</section>
+
+<!-- CALENDAR -->
+<section class="bg-soft">
+  <div class="wrap narrow body">
+    <div class="kicker reveal">And then the calendar fought us</div>
+    <h2 class="reveal d1">Control the schedule, or it controls your capital.</h2>
+    <p class="lead reveal d2">The town pushed our start date by a month — so we missed the window to get slabs in before winter, and carried the land through the cold months on Brett's own cash.</p>
+    <p class="reveal d3" style="margin-top:14px">That lesson is now baked into the model. Schedule certainty isn't a nicety; it's the difference between a build that pencils and one that bleeds.</p>
+  </div>
+</section>
+
+<!-- THE CHASSIS -->
+<section class="bg-white">
+  <div class="wrap">
+    <div class="kicker reveal">The product insight</div>
+    <h2 class="reveal d1">One chassis. Many homes.</h2>
+    <p class="lead reveal d2">A single 1,500 sqft chassis — <b>standard supplies and standard build procedures</b> — reconfigured into four products. Same parts, same crew muscle memory; different home. The cost-out and schedule certainty we learned the hard way compounds across every configuration.</p>
+    <div class="configs">
+      <div class="config lead-cfg reveal d1">
+        <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/chassis-somerset.png" alt="The Somerset duplex" loading="lazy" />
+        <div class="cc">
+          <div class="nm">The Somerset</div>
+          <div class="ty">Duplex · 2 units</div>
+          <div class="ds">The configuration we're building at 49 Drummond.</div>
+          <span class="tag2">In production</span>
+        </div>
+      </div>
+      <div class="config reveal d2">
+        <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/chassis-cumberland.png" alt="The Cumberland single-family" loading="lazy" />
+        <div class="cc">
+          <div class="nm">The Cumberland</div>
+          <div class="ty">Single-family · no garage</div>
+          <div class="ds">The leanest configuration of the chassis.</div>
+        </div>
+      </div>
+      <div class="config reveal d3">
+        <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/chassis-knox.png" alt="The Knox single-family with garage" loading="lazy" />
+        <div class="cc">
+          <div class="nm">The Knox</div>
+          <div class="ty">Single-family · with garage</div>
+          <div class="ds">Same chassis, attached garage added.</div>
+        </div>
+      </div>
+      <div class="config reveal d4">
+        <img src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/chassis-penobscot.png" alt="The Penobscot triplex" loading="lazy" />
+        <div class="cc">
+          <div class="nm">The Penobscot</div>
+          <div class="ty">Triplex · 3 efficiencies</div>
+          <div class="ds">Highest density off the same footprint.</div>
+        </div>
+      </div>
+    </div>
+    <div class="same">
+      <div class="pill reveal d1">Standard supplies<span>One bill of materials, ordered the same way every time</span></div>
+      <div class="pill reveal d2">Standard build procedures<span>Crews repeat the same sequence on every home</span></div>
+      <div class="pill reveal d3">Configurable output<span>Duplex, single-family, or triplex from one chassis</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- RETURNS / CAP RATE -->
+<section class="bg-pine">
+  <div class="wrap">
+    <div class="kicker reveal" style="color:var(--sage)">What one throws off</div>
+    <h2 class="reveal d1">The Somerset, by the numbers.</h2>
+    <p class="lead reveal d2" style="margin-bottom:40px">Built at cost — so the yield lands well above market. Here's a single Somerset duplex.</p>
+    <div class="split">
+      <div class="calc reveal d1">
+        <div class="row"><span class="l">All-in cost (built at cost)</span><span class="v">$300,000</span></div>
+        <div class="row"><span class="l">Rent · $1,750/unit × 2 units</span><span class="v">$3,500 / mo</span></div>
+        <div class="row"><span class="l">Gross potential rent (annual)</span><span class="v">$42,000</span></div>
+        <div class="row"><span class="l">Operating expenses · 30%</span><span class="v minus">− $12,600</span></div>
+        <div class="row noi"><span class="l">Net operating income</span><span class="v">$29,400</span></div>
+      </div>
+      <div>
+        <div class="bignum reveal d2">
+          <div class="cap">9.8%</div>
+          <div class="cl">Cap rate</div>
+          <div class="yc">$29,400 NOI ÷ $300,000 cost · yield on cost</div>
+        </div>
+        <div class="created reveal d3">
+          <div class="big">≈ $120K of built-in equity per duplex</div>
+          <div class="sm">At a ~7% market cap rate, $29,400 of NOI supports a value of ≈ $420K — roughly $120K above our $300K cost, before a dollar of outside cash. <i>Illustrative; market cap rate assumed.</i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TWO BUSINESSES -->
+<section class="bg-cream">
+  <div class="wrap">
+    <div class="kicker reveal">The thesis</div>
+    <h2 class="reveal d1">Two businesses out of all this.</h2>
+    <p class="lead reveal d2">Everything above wasn't just building houses — it was R&D for two productized businesses.</p>
+    <div class="biz">
+      <div class="bizcard reveal d1">
+        <div class="n">01</div>
+        <h3>A Maine-tuned kit of parts</h3>
+        <p>The chassis, productized: EcoPanel-based designs engineered for Maine — climate, code, R-values. Once the foundation is in, we ship the builder everything they need to put up the home, configured to the lot. We sell the cost-out and schedule certainty we learned the hard way — as a product.</p>
+      </div>
+      <div class="bizcard reveal d2">
+        <div class="n">02</div>
+        <h3>Regional build-to-rent dev co</h3>
+        <p>We build and manage on behalf of investors across the region. Vertically integrated trades + design-for-cost + in-house management = full-stack BTR. We're not theorizing — we've done it on our own balance sheet first.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANAGEMENT EDGE -->
+<section class="bg-pine">
+  <div class="wrap narrow">
+    <div class="kicker reveal" style="color:var(--sage)">The moat</div>
+    <h2 class="reveal d1">Built for the race to the bottom.</h2>
+    <p class="lead reveal d2">Our property management arm is engineered for low-cost operations — the moat under the build-to-rent business. We can manage cheaper than anyone we'd build for.</p>
+    <ul class="feats reveal d3" style="margin-top:20px">
+      <li style="color:rgba(244,236,216,.9)"><b style="color:#fff">Offshored</b> tenant call handling</li>
+    </ul>
+    <div class="tl reveal d3">
+      <span class="dot"></span>
+      <div><b>TenantLane</b> — our AI answering + scheduling solution &nbsp;<span>· go-live August 1, 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="bg-white">
+  <div class="wrap narrow body">
+    <div class="kicker reveal">Why us</div>
+    <h2 class="reveal d1">We've lived every step of this.</h2>
+    <ul class="feats reveal d2">
+      <li>We've <b>operated</b> — 700 doors — and <b>felt the pain</b> of bad debt, then rebuilt to 350 healthy doors</li>
+      <li>We've <b>built</b> — three ground-up projects — and learned to take cost out systematically</li>
+      <li>We've turned the lessons into <b>products</b>, not just better habits</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="bg-pine closing">
+  <div class="wrap narrow" style="text-align:center">
+    <img class="logo reveal" src="https://raw.githubusercontent.com/bb723/cmrc-story-assets/main/cmr-logo.jpg" alt="CMR logo" />
+    <div class="kicker reveal d1" style="color:var(--sage);justify-content:center">No ask — an open question</div>
+    <h2 class="reveal d1">Where do we go from here?</h2>
+    <p class="lead reveal d2" style="margin:0 auto">We've proven we can build, take cost out, and operate. What we don't yet know is which door to walk through.</p>
+    <div class="forks">
+      <div class="fork reveal d1"><div class="q">A</div><p>Lean harder into the <b>kit of parts</b> — productize the EcoPanel designs?</p></div>
+      <div class="fork reveal d2"><div class="q">B</div><p>Scale the <b>build-to-rent</b> dev co and raise outside capital?</p></div>
+      <div class="fork reveal d3"><div class="q">C</div><p>Something we <b>haven't framed</b> yet?</p></div>
+    </div>
+    <p class="reveal d3" style="margin-top:34px;font-family:'Archivo';font-weight:700;font-size:1.3rem;color:#fff">The ask of you: help us figure out where to point this next.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="disc">Preliminary — prepared for discussion with advisors. Not an offer or a quote.</div>
+  Central Maine Redevelopment · New Homes. Same Roots.
+</footer>
+
+<script>
+  // scroll progress + floating mark
+  const prog=document.getElementById('progress'), mark=document.getElementById('mark');
+  const onScroll=()=>{
+    const h=document.documentElement.scrollHeight-innerHeight;
+    prog.style.width=(scrollY/h*100)+'%';
+    mark.classList.toggle('show', scrollY>innerHeight*0.85);
+  };
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  // subtle hero parallax
+  const hero=document.querySelector('.hero::before');
+  addEventListener('scroll',()=>{
+    const y=scrollY; const bg=document.querySelector('.hero');
+    if(bg && y<innerHeight) bg.style.setProperty('--py',y*0.25+'px');
+  },{passive:true});
+
+  // reveal on scroll
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // count-up stats
+  const countIO=new IntersectionObserver((es)=>{
+    es.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const el=e.target, to=+el.dataset.to, suf=el.dataset.suffix||'';
+      const start=performance.now(), dur=1400;
+      const tick=now=>{
+        const p=Math.min((now-start)/dur,1), eased=1-Math.pow(1-p,3);
+        el.textContent=Math.round(to*eased)+suf;
+        if(p<1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick); countIO.unobserve(el);
+    });
+  },{threshold:0.6});
+  document.querySelectorAll('.num[data-to]').forEach(el=>countIO.observe(el));
+</script>
+</body>
+</html>
